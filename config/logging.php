@@ -37,9 +37,28 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'gelf'],
             'ignore_exceptions' => false,
         ],
+
+
+        'gelf' => [
+            'driver' => 'custom',
+
+            'via' => \Hedii\LaravelGelfLogger\GelfLoggerFactory::class,
+            'processors' => [
+                \Hedii\LaravelGelfLogger\Processors\NullStringProcessor::class,
+                \Foo\Bar\AnotherProcessor::class,
+            ],
+            'level' => 'debug',
+            'name' => 'graylog',
+            'system_name' => null,
+            'transport' => 'udp',
+            'host' => '127.0.0.1',
+            'port' => 12201,
+            'max_length' => null,
+        ],
+
 
         'single' => [
             'driver' => 'single',
